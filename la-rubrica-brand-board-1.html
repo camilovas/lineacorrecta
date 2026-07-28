@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Rúbrica — Brand Board · Línea Correcta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --papel:#F6F2E9;
+    --tinta:#1C1A17;
+    --tinta-suave:#4A453D;
+    --carmesi:#8E2434;
+    --carmesi-osc:#5E1622;
+    --dorado:#A8853B;
+    --dorado-claro:#D9C48A;
+    --azul:#1E3557;
+    --azul-claro:#E4E9F0;
+    --verde:#3E6B4F;
+    --hairline:#D9D2C2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:'Inter',sans-serif;background:var(--papel);color:var(--tinta);
+    line-height:1.65;font-size:16px;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px;}
+  @media(min-width:768px){.wrap{padding:0 44px;}}
+  .display{font-family:'Playfair Display',serif;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--carmesi);font-weight:600;}
+
+  /* ===== Portada ===== */
+  .cover{padding:80px 0 64px;border-bottom:4px double var(--tinta);text-align:center;}
+  .cover .num{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--tinta-suave);letter-spacing:.2em;}
+  h1{font-family:'Playfair Display',serif;font-weight:800;font-size:clamp(48px,9vw,104px);line-height:1;margin:18px 0 6px;}
+  .cover .sub{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(17px,2.5vw,23px);color:var(--tinta-suave);}
+  .cover svg{display:block;margin:36px auto 0;max-width:520px;width:90%;height:auto;}
+  .cover-cite{max-width:620px;margin:44px auto 0;padding-top:28px;border-top:1px solid var(--hairline);}
+  .cover-cite p{font-family:'Playfair Display',serif;font-style:italic;font-size:17.5px;color:var(--tinta-suave);}
+  .cover-cite small{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dorado);display:block;margin-top:10px;}
+
+  /* ===== Secciones ===== */
+  section{padding:72px 0;border-bottom:1px solid var(--hairline);}
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:14px;}
+  .sec-n{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:var(--papel);background:var(--carmesi);padding:4px 9px;letter-spacing:.08em;}
+  h2{font-family:'Playfair Display',serif;font-weight:800;font-size:clamp(28px,4.5vw,44px);line-height:1.05;}
+  .lead{color:var(--tinta-suave);max-width:70ch;margin-bottom:26px;font-size:16.5px;}
+
+  /* ===== Logo ===== */
+  .logo-grid{display:grid;gap:18px;margin-top:26px;}
+  @media(min-width:820px){.logo-grid{grid-template-columns:1.5fr 1fr;}}
+  .logo-card{border:1.5px solid var(--tinta);padding:36px 28px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:#FBF8F1;min-height:220px;position:relative;}
+  .logo-card.dark{background:var(--tinta);border-color:var(--tinta);}
+  .logo-card .tagcorner{position:absolute;top:10px;left:12px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--tinta-suave);}
+  .logo-card.dark .tagcorner{color:var(--dorado-claro);}
+  .wordmark{font-family:'Playfair Display',serif;font-weight:800;font-size:clamp(26px,4.5vw,40px);letter-spacing:.01em;text-align:center;line-height:1.05;}
+  .logo-card.dark .wordmark{color:var(--papel);}
+  .logo-row{display:grid;gap:18px;grid-template-columns:1fr;margin-top:18px;}
+  @media(min-width:820px){.logo-row{grid-template-columns:repeat(3,1fr);}}
+  .logo-card.small{min-height:170px;padding:24px;}
+  .monogram{font-family:'Playfair Display',serif;font-weight:800;font-size:52px;line-height:1;}
+  .sello-svg{width:120px;height:120px;}
+  .logo-note{font-size:14px;color:var(--tinta-suave);max-width:70ch;margin-top:18px;}
+
+  /* ===== Paleta ===== */
+  .palette{display:grid;gap:14px;grid-template-columns:repeat(2,1fr);margin-top:26px;}
+  @media(min-width:768px){.palette{grid-template-columns:repeat(3,1fr);}}
+  @media(min-width:1000px){.palette{grid-template-columns:repeat(6,1fr);}}
+  .swatch{border:1.5px solid var(--tinta);}
+  .swatch .chip{height:110px;}
+  .swatch .info{padding:12px 12px 14px;background:#FBF8F1;border-top:1.5px solid var(--tinta);}
+  .swatch b{display:block;font-size:13.5px;font-weight:600;}
+  .swatch .mono{font-size:12px;color:var(--tinta-suave);}
+  .swatch small{display:block;font-size:11.5px;color:var(--tinta-suave);margin-top:3px;line-height:1.45;}
+  .prop{display:flex;height:26px;margin-top:26px;border:1.5px solid var(--tinta);overflow:hidden;}
+  .prop div{height:100%;}
+  .prop-note{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--tinta-suave);margin-top:8px;letter-spacing:.04em;}
+
+  /* ===== Tipografía ===== */
+  .type-spec{display:grid;gap:0;border:1.5px solid var(--tinta);margin-top:26px;background:#FBF8F1;}
+  .type-row{display:grid;gap:14px;padding:26px 26px;border-bottom:1px solid var(--hairline);grid-template-columns:1fr;align-items:baseline;}
+  .type-row:last-child{border-bottom:none;}
+  @media(min-width:820px){.type-row{grid-template-columns:220px 1fr;}}
+  .type-role{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--carmesi);font-weight:600;}
+  .type-role small{display:block;color:var(--tinta-suave);text-transform:none;letter-spacing:0;font-size:11.5px;margin-top:4px;font-weight:400;}
+  .sp-display{font-family:'Playfair Display',serif;font-weight:800;font-size:clamp(28px,4.5vw,44px);line-height:1.08;}
+  .sp-display-it{font-family:'Playfair Display',serif;font-style:italic;font-weight:500;font-size:clamp(20px,3vw,27px);color:var(--tinta-suave);}
+  .sp-ui{font-size:16px;max-width:62ch;}
+  .sp-mono{font-family:'IBM Plex Mono',monospace;font-size:13.5px;color:var(--azul);}
+
+  /* ===== Voz ===== */
+  .voice-grid{display:grid;gap:18px;margin-top:26px;}
+  @media(min-width:820px){.voice-grid{grid-template-columns:repeat(2,1fr);}}
+  .voice-card{border:1.5px solid var(--tinta);background:#FBF8F1;padding:24px 26px;}
+  .voice-card .t{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:12px;display:block;}
+  .voice-card.si .t{color:var(--verde);}
+  .voice-card.no .t{color:var(--carmesi);}
+  .voice-card p{font-family:'Playfair Display',serif;font-size:19px;line-height:1.5;}
+  .voice-card small{display:block;margin-top:10px;font-size:13px;color:var(--tinta-suave);}
+
+  /* ===== Veredictos ===== */
+  .actas{display:grid;gap:18px;margin-top:26px;}
+  @media(min-width:820px){.actas{grid-template-columns:repeat(3,1fr);}}
+  .acta{border:1.5px solid var(--tinta);background:#FBF8F1;padding:26px 24px;text-align:center;position:relative;}
+  .acta .stamp{
+    display:inline-block;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:13px;letter-spacing:.16em;
+    text-transform:uppercase;border:2.5px solid;padding:8px 16px;transform:rotate(-3deg);margin-bottom:14px;
+  }
+  .acta.a1 .stamp{color:var(--verde);border-color:var(--verde);}
+  .acta.a2 .stamp{color:var(--dorado);border-color:var(--dorado);}
+  .acta.a3 .stamp{color:var(--carmesi);border-color:var(--carmesi);}
+  .acta p{font-size:13.5px;color:var(--tinta-suave);}
+
+  /* ===== Aplicaciones ===== */
+  .app-hero{border:1.5px solid var(--tinta);background:var(--papel);margin-top:26px;overflow:hidden;}
+  .app-hero .bar{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-bottom:1.5px solid var(--tinta);background:#FBF8F1;}
+  .app-hero .bar .lg{display:flex;align-items:center;gap:10px;font-family:'Playfair Display',serif;font-weight:800;font-size:16px;}
+  .app-hero .bar .links{display:none;gap:18px;font-size:13px;color:var(--tinta-suave);}
+  @media(min-width:768px){.app-hero .bar .links{display:flex;}}
+  .app-hero .hero-body{padding:52px 26px 56px;text-align:center;position:relative;}
+  @media(min-width:768px){.app-hero .hero-body{padding:72px 40px 80px;}}
+  .app-hero h3{font-family:'Playfair Display',serif;font-weight:800;font-size:clamp(30px,5.5vw,56px);line-height:1.05;margin:12px 0 14px;}
+  .app-hero h3 em{font-style:italic;color:var(--carmesi);}
+  .app-hero .hero-body p{color:var(--tinta-suave);max-width:56ch;margin:0 auto 26px;font-size:15.5px;}
+  .app-hero .cta{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;letter-spacing:.06em;background:var(--carmesi);color:var(--papel);padding:13px 24px;text-decoration:none;}
+  .app-hero .cta.alt{background:transparent;color:var(--tinta);border:2px solid var(--tinta);margin-left:10px;}
+  .app-hero svg.rub{display:block;margin:30px auto 0;max-width:360px;width:80%;height:auto;opacity:.9;}
+  .app-cards{display:grid;gap:18px;margin-top:18px;}
+  @media(min-width:820px){.app-cards{grid-template-columns:1.2fr 1fr;}}
+  .og-card{border:1.5px solid var(--tinta);background:var(--tinta);color:var(--papel);padding:26px;position:relative;}
+  .og-card .eyebrow{color:var(--dorado-claro);}
+  .og-card h4{font-family:'Playfair Display',serif;font-weight:800;font-size:24px;margin:10px 0 8px;line-height:1.2;}
+  .og-card p{font-size:13.5px;color:#C9C2B4;margin-bottom:16px;}
+  .og-card .foot{display:flex;justify-content:space-between;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dorado-claro);border-top:1px solid #3B362E;padding-top:12px;letter-spacing:.06em;}
+  .og-stamp{display:inline-block;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11px;letter-spacing:.14em;border:2px solid var(--verde);color:#7FBF97;padding:5px 10px;transform:rotate(-2deg);}
+  .ui-card{border:1.5px solid var(--tinta);background:#FBF8F1;padding:24px 26px;}
+  .ui-card .t{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--carmesi);font-weight:600;display:block;margin-bottom:14px;}
+  .ui-item{padding:12px 0;border-bottom:1px solid var(--hairline);display:flex;justify-content:space-between;gap:14px;align-items:baseline;}
+  .ui-item:last-child{border:none;}
+  .ui-item b{font-size:14.5px;font-weight:600;}
+  .ui-item small{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--tinta-suave);white-space:nowrap;}
+
+  /* ===== Reglas ===== */
+  .rules{display:grid;gap:18px;margin-top:26px;}
+  @media(min-width:820px){.rules{grid-template-columns:repeat(2,1fr);}}
+  .rule{border:1.5px solid var(--tinta);padding:24px 26px;background:#FBF8F1;}
+  .rule.si{border-top:5px solid var(--verde);}
+  .rule.no{border-top:5px solid var(--carmesi);}
+  .rule .t{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;display:block;margin-bottom:12px;}
+  .rule.si .t{color:var(--verde);}
+  .rule.no .t{color:var(--carmesi);}
+  .rule ul{list-style:none;}
+  .rule li{padding:6px 0 6px 20px;position:relative;font-size:14.5px;color:var(--tinta-suave);}
+  .rule.si li::before{content:'✓';position:absolute;left:0;color:var(--verde);font-weight:700;}
+  .rule.no li::before{content:'✕';position:absolute;left:0;color:var(--carmesi);font-weight:700;}
+
+  footer{padding:40px 0 64px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--tinta-suave);letter-spacing:.08em;}
+
+  @media print{
+    section{break-inside:avoid;padding:36px 0;}
+    .cover{padding:40px 0;}
+  }
+</style>
+</head>
+<body>
+
+<header class="cover wrap">
+  <span class="num">BRAND BOARD · Nº 001 · LÍNEA CORRECTA · 2026</span>
+  <h1>La Rúbrica</h1>
+  <p class="sub">De la pluma a la llave pública — el mismo gesto, doscientos años después.</p>
+  <svg viewBox="0 0 520 110" role="img" aria-label="La rúbrica: trazo de pluma que se convierte en línea recta digital">
+    <path d="M18 72 C 40 18, 78 18, 74 54 C 71 82, 38 88, 44 60 C 50 34, 96 26, 118 48 C 134 64, 118 86, 104 76 C 92 68, 108 50, 136 56 L 470 56" fill="none" stroke="#1C1A17" stroke-width="4.5" stroke-linecap="round"/>
+    <rect x="474" y="50.5" width="11" height="11" fill="#8E2434"/>
+  </svg>
+  <div class="cover-cite">
+    <p>«Constituyamos este Areópago para que vele sobre la educación de los niños… para que purifique lo que se haya corrompido en la República.»</p>
+    <small>Simón Bolívar · Discurso de Angostura · 15 de febrero de 1819 · el Poder Moral</small>
+  </div>
+</header>
+
+<section class="wrap">
+  <div class="sec-head"><span class="sec-n">01</span><h2>El concepto</h2></div>
+  <p class="lead">En Angostura, Bolívar propuso una cuarta rama del poder público: el <strong>Poder Moral</strong>, un cuerpo encargado de vigilar la conducta de los funcionarios, premiar la virtud y censurar la corrupción. El Congreso de 1819 lo declaró irrealizable. Línea Correcta lo realiza: no como institución del Estado, sino como red ciudadana con firmas criptográficas. La marca no celebra al ícono — completa su tarea pendiente.</p>
+  <p class="lead">El gesto que lo resume es <strong>la rúbrica</strong>: el trazo con que se firma y se valida. Nuestra línea nace como pluma sobre papel de gaceta —irregular, humana, con tinta— y termina como línea recta digital que remata en un punto carmesí: la firma Ed25519 del revisor. Herencia y presente en un solo trazo continuo.</p>
+</section>
+
+<section class="wrap">
+  <div class="sec-head"><span class="sec-n">02</span><h2>Logo</h2></div>
+  <p class="lead">El sistema tiene tres piezas: el logotipo principal (wordmark con la rúbrica como subrayado-firma), el monograma para espacios reducidos, y el sello de acta para veredictos y documentos.</p>
+  <div class="logo-grid">
+    <div class="logo-card">
+      <span class="tagcorner">Principal · positivo</span>
+      <div class="wordmark">Línea Correcta</div>
+      <svg viewBox="0 0 340 44" style="max-width:300px;width:88%"><path d="M12 30 C 26 6, 48 8, 44 24 C 41 36, 22 38, 28 24 C 33 12, 62 12, 74 24 L 300 24" fill="none" stroke="#1C1A17" stroke-width="3.5" stroke-linecap="round"/><rect x="303" y="20" width="8" height="8" fill="#8E2434"/></svg>
+    </div>
+    <div class="logo-card dark">
+      <span class="tagcorner">Principal · negativo</span>
+      <div class="wordmark">Línea Correcta</div>
+      <svg viewBox="0 0 340 44" style="max-width:300px;width:88%"><path d="M12 30 C 26 6, 48 8, 44 24 C 41 36, 22 38, 28 24 C 33 12, 62 12, 74 24 L 300 24" fill="none" stroke="#F6F2E9" stroke-width="3.5" stroke-linecap="round"/><rect x="303" y="20" width="8" height="8" fill="#D9C48A"/></svg>
+    </div>
+  </div>
+  <div class="logo-row">
+    <div class="logo-card small">
+      <span class="tagcorner">Monograma</span>
+      <div class="monogram">LC</div>
+      <svg viewBox="0 0 120 22" style="width:110px"><path d="M8 14 C 16 2, 30 4, 26 12 C 23 19, 12 18, 18 11 L 98 11" fill="none" stroke="#1C1A17" stroke-width="3" stroke-linecap="round"/><rect x="101" y="7.5" width="7" height="7" fill="#8E2434"/></svg>
+    </div>
+    <div class="logo-card small">
+      <span class="tagcorner">Sello de acta</span>
+      <svg class="sello-svg" viewBox="0 0 120 120" role="img" aria-label="Sello circular de Línea Correcta">
+        <circle cx="60" cy="60" r="54" fill="none" stroke="#1C1A17" stroke-width="3"/>
+        <circle cx="60" cy="60" r="45" fill="none" stroke="#1C1A17" stroke-width="1"/>
+        <path d="M28 66 C 38 46, 54 48, 50 60 C 47 70, 34 70, 40 59 C 46 48, 66 48, 74 59 L 90 59" fill="none" stroke="#8E2434" stroke-width="3" stroke-linecap="round"/>
+        <text x="60" y="30" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="8.5" letter-spacing="2" fill="#1C1A17">LÍNEA CORRECTA</text>
+        <text x="60" y="98" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="8.5" letter-spacing="2" fill="#1C1A17">MDCCCXIX · 1819</text>
+      </svg>
+    </div>
+    <div class="logo-card small">
+      <span class="tagcorner">Rúbrica sola · favicon / avatar</span>
+      <svg viewBox="0 0 140 70" style="width:150px"><path d="M14 48 C 28 12, 56 14, 50 36 C 46 52, 24 54, 32 36 C 40 20, 76 20, 88 36 L 118 36" fill="none" stroke="#1C1A17" stroke-width="5" stroke-linecap="round"/><rect x="121" y="30.5" width="11" height="11" fill="#8E2434"/></svg>
+    </div>
+  </div>
+  <p class="logo-note"><strong>Construcción:</strong> el trazo siempre fluye de izquierda a derecha, del bucle a la recta — del pasado manuscrito al presente verificable. El punto final es un cuadrado (nunca un círculo): es un bit, no una gota de tinta. Área de protección mínima: la altura del bucle a cada lado. El trazo jamás se distorsiona, se engrosa por partes ni se anima en reversa.</p>
+</section>
+
+<section class="wrap">
+  <div class="sec-head"><span class="sec-n">03</span><h2>Paleta — tintas de gaceta</h2></div>
+  <p class="lead">Colores de imprenta republicana del XIX, apagados a tonos documentales. Nacen de la bandera grancolombiana pero se leen como archivo, no como partido.</p>
+  <div class="palette">
+    <div class="swatch"><div class="chip" style="background:#8E2434"></div><div class="info"><b>Carmesí republicano</b><span class="mono">#8E2434</span><small>Acción, sellos, la firma. El color protagonista.</small></div></div>
+    <div class="swatch"><div class="chip" style="background:#1E3557"></div><div class="info"><b>Azul tinta</b><span class="mono">#1E3557</span><small>Datos, enlaces, lo criptográfico.</small></div></div>
+    <div class="swatch"><div class="chip" style="background:#A8853B"></div><div class="info"><b>Dorado viejo</b><span class="mono">#A8853B</span><small>Acentos de honor, laureles de línea, destacados.</small></div></div>
+    <div class="swatch"><div class="chip" style="background:#F6F2E9"></div><div class="info"><b>Papel algodón</b><span class="mono">#F6F2E9</span><small>Fondo base. La gaceta.</small></div></div>
+    <div class="swatch"><div class="chip" style="background:#1C1A17"></div><div class="info"><b>Tinta negra</b><span class="mono">#1C1A17</span><small>Texto, trazos, modo oscuro.</small></div></div>
+    <div class="swatch"><div class="chip" style="background:#3E6B4F"></div><div class="info"><b>Verde acta</b><span class="mono">#3E6B4F</span><small>Funcional: veredicto validado. Solo semántico.</small></div></div>
+  </div>
+  <div class="prop">
+    <div style="width:46%;background:#F6F2E9;"></div>
+    <div style="width:26%;background:#1C1A17;"></div>
+    <div style="width:14%;background:#8E2434;"></div>
+    <div style="width:8%;background:#1E3557;"></div>
+    <div style="width:6%;background:#A8853B;"></div>
+  </div>
+  <p class="prop-note">Proporción de uso: papel 46 · tinta 26 · carmesí 14 · azul 8 · dorado 6. El verde acta no suma proporción: aparece solo en veredictos.</p>
+</section>
+
+<section class="wrap">
+  <div class="sec-head"><span class="sec-n">04</span><h2>Tipografía — imprenta y interfaz</h2></div>
+  <p class="lead">Una didona para proclamar, una grotesca para operar, una mono para certificar. Tres voces, una jerarquía.</p>
+  <div class="type-spec">
+    <div class="type-row">
+      <div class="type-role">Display · Playfair Display<small>ExtraBold 800 · titulares, proclamas</small></div>
+      <div class="sp-display">La República te observa de vuelta</div>
+    </div>
+    <div class="type-row">
+      <div class="type-role">Editorial · Playfair Italic<small>Medium 500 itálica · citas, subtítulos</small></div>
+      <div class="sp-display-it">El Poder Moral que Angostura declaró irrealizable.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-role">Interfaz · Inter<small>400–600 · cuerpo, botones, navegación</small></div>
+      <div class="sp-ui">Consulta el historial verificado de cualquier servidor público, aporta evidencia con tu identidad y sigue los casos de tu municipio. La interfaz habla claro y en voz activa.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-role">Certificación · IBM Plex Mono<small>400–600 · hashes, firmas, actas, metadatos</small></div>
+      <div class="sp-mono">acta #4F82 · firmas 3/5 · merkle_root: 8c1f4e2ab90d…<br>revisor: M. Restrepo (T.P. 188.240) · ed25519 ✓ verificada</div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="sec-head"><span class="sec-n">05</span><h2>Voz — clave de proclama</h2></div>
+  <p class="lead">La marca habla como una gaceta republicana editada en 2026: solemne en los titulares, llana en la interfaz, exacta en los datos. Los sustantivos del sistema salen del léxico de Angostura: los reportes son <strong>expedientes</strong>, los veredictos son <strong>actas</strong>, los revisores conforman <strong>el Areópago</strong>.</p>
+  <div class="voice-grid">
+    <div class="voice-card si"><span class="t">✓ Así hablamos</span><p>«Ciudadano: este expediente fue verificado por tres firmas del Areópago. Puedes comprobarlo tú mismo.»</p><small>Solemne pero verificable. Siempre invita a comprobar, nunca pide fe.</small></div>
+    <div class="voice-card no"><span class="t">✕ Así no</span><p>«¡Descubre los TRAPOS SUCIOS de los políticos! 🔥»</p><small>Nada de amarillismo, emojis en lo institucional, ni lenguaje acusatorio previo al acta.</small></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="sec-head"><span class="sec-n">06</span><h2>Las actas — sistema de veredictos</h2></div>
+  <p class="lead">El veredicto ternario se estampa como sello de caucho sobre el expediente: ligera rotación, tinta plana, tipografía mono. Es el único momento donde la marca "toca" el contenido.</p>
+  <div class="actas">
+    <div class="acta a1"><span class="stamp">Validado</span><p>La evidencia sostiene los hechos. Verde acta, firma visible del quórum.</p></div>
+    <div class="acta a2"><span class="stamp">No concluyente</span><p>La evidencia no alcanza. Dorado viejo — la honestidad de decir «no sabemos».</p></div>
+    <div class="acta a3"><span class="stamp">Desvirtuado</span><p>La evidencia contradice el señalamiento. Carmesí, con la réplica del servidor al lado.</p></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="sec-head"><span class="sec-n">07</span><h2>Aplicaciones</h2></div>
+  <p class="lead">La identidad aplicada: hero de la landing, tarjeta social para compartir y componentes de interfaz.</p>
+
+  <div class="app-hero">
+    <div class="bar">
+      <div class="lg"><svg viewBox="0 0 90 20" style="width:70px"><path d="M6 13 C 12 3, 22 4, 19 11 C 17 16, 9 15, 13 10 L 72 10" fill="none" stroke="#1C1A17" stroke-width="2.5" stroke-linecap="round"/><rect x="74" y="7" width="6" height="6" fill="#8E2434"/></svg>Línea Correcta</div>
+      <div class="links"><span>Expedientes</span><span>El Areópago</span><span>Cómo funciona</span><span class="mono" style="color:#8E2434;font-weight:600;">ÚNETE</span></div>
+    </div>
+    <div class="hero-body">
+      <span class="eyebrow">El Poder Moral · pendiente desde 1819</span>
+      <h3>La conducta pública,<br><em>firmada y sellada</em></h3>
+      <p>Bolívar propuso en Angostura un poder que velara por la virtud de los funcionarios. Lo declararon irrealizable. Doscientos años después, lo estamos construyendo — con evidencia, firmas públicas y código abierto.</p>
+      <div><a class="cta" href="#">Consultar un expediente →</a><a class="cta alt" href="#">Ver el código</a></div>
+      <svg class="rub" viewBox="0 0 360 60"><path d="M12 42 C 24 10, 50 12, 45 32 C 41 46, 22 47, 29 32 C 36 18, 66 18, 76 32 L 320 32" fill="none" stroke="#1C1A17" stroke-width="3" stroke-linecap="round" opacity=".85"/><rect x="323" y="27.5" width="9" height="9" fill="#8E2434"/></svg>
+    </div>
+  </div>
+
+  <div class="app-cards">
+    <div class="og-card">
+      <span class="eyebrow">lineacorrecta.co · expediente compartido</span>
+      <h4>Acta #4F82 — Secretaría de Obras, contrato sin ejecución</h4>
+      <p>Verificado por 3 firmas del Areópago sobre 14 documentos de SECOP II y una sentencia del Tribunal. Réplica del servidor incluida.</p>
+      <span class="og-stamp">VALIDADO ✓</span>
+      <div class="foot"><span>merkle_root 8c1f…anclado</span><span>LC · 1819→2026</span></div>
+    </div>
+    <div class="ui-card">
+      <span class="t">Componentes de interfaz</span>
+      <div class="ui-item"><b>Expediente abierto</b><small>mono · azul tinta</small></div>
+      <div class="ui-item"><b style="color:#8E2434;">Firmar como revisor</b><small>botón · carmesí</small></div>
+      <div class="ui-item"><b>Historial del cargo</b><small>Inter 600 · tinta</small></div>
+      <div class="ui-item"><b style="font-family:'Playfair Display',serif;font-style:italic;font-weight:500;">«La réplica del aludido»</b><small>Playfair italic · citas</small></div>
+      <div class="ui-item"><b style="color:#3E6B4F;">✓ Firma verificada</b><small>verde acta · semántico</small></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="sec-head"><span class="sec-n">08</span><h2>Reglas de blindaje político</h2></div>
+  <p class="lead">La iconografía bolivariana carga lecturas partidistas en la región. La marca se ancla al episodio de Angostura como idea, jamás al ícono como símbolo. Esta regla no es estética: es la que protege la neutralidad de la plataforma.</p>
+  <div class="rules">
+    <div class="rule si"><span class="t">✓ Siempre</span><ul>
+      <li>Citar el Poder Moral y Angostura 1819 textualmente, con fecha</li>
+      <li>La rúbrica como trazo abstracto — gesto, no retrato</li>
+      <li>Léxico republicano funcional: expediente, acta, Areópago</li>
+      <li>MDCCCXIX / 1819 como marca temporal en sellos</li>
+      <li>Tono de archivo: papel, tinta, imprenta</li>
+    </ul></div>
+    <div class="rule no"><span class="t">✕ Nunca</span><ul>
+      <li>Espadas, bustos, retratos o siluetas de Bolívar</li>
+      <li>La palabra «bolivariano/a» en naming o copy</li>
+      <li>Banderas actuales o colores en proporción de bandera</li>
+      <li>Asociación visual con movimientos o gobiernos</li>
+      <li>Épica militar: batallas, caballos, laureles cerrados en corona</li>
+    </ul></div>
+  </div>
+</section>
+
+<footer>LA RÚBRICA · BRAND BOARD Nº 001 · LÍNEA CORRECTA · GOLDEN EGGS · 2026 · MDCCCXIX→MMXXVI</footer>
+
+</body>
+</html>
