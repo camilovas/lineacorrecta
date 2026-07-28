@@ -76,7 +76,9 @@ Cada capa vive en su propio crate de Rust dentro del workspace (convención de n
 
 ## 6. Seguridad — OWASP
 
-### OWASP API Security Top 10 (prioritario, dado que el sistema es API-first)
+Línea Correcta usa **cuatro** referencias OWASP distintas, cada una cubriendo una superficie distinta del sistema — tratarlas como una sola lista sería quedarse corto. Todas vigentes a 2026: API Security Top 10 (2023), Top 10 web general (2025, actualización mayor recién publicada), Top 10 CI/CD Security Risks, y ASVS 5.0.0 como estándar de verificación.
+
+### 6.1 OWASP API Security Top 10 (2023) — prioritario, el sistema es API-first
 
 | Riesgo | Mitigación en Línea Correcta |
 |---|---|
@@ -91,7 +93,40 @@ Cada capa vive en su propio crate de Rust dentro del workspace (convención de n
 | API9 Improper Inventory Management | Un solo esquema OpenAPI versionado; endpoints deprecados se retiran, no quedan huérfanos sin documentar |
 | API10 Unsafe Consumption of APIs | Datos de SECOP/SIGEP/terceros se validan y sanitizan antes de persistir, tratados como input no confiable |
 
-### Prácticas transversales
+### 6.2 OWASP Top 10:2025 (web general) — cubre lo que la lista API-first no cubre
+
+Actualización mayor publicada en enero de 2026 (la primera desde 2021, sobre 175.000 CVE y 589 CWE analizados). Relevante porque los clientes web/móvil de Línea Correcta tienen superficie propia (sesiones de navegador, renderizado de contenido generado por usuarios en la capa social, dependencias de frontend) que la lista de API no cubre directamente. Dos categorías son **nuevas** y aplican directo a decisiones ya tomadas en este documento:
+
+| Riesgo 2025 | Relevancia para Línea Correcta |
+|---|---|
+| A01 Broken Access Control (#1 desde hace 4 ciclos; ahora absorbe SSRF, antes categoría propia) | Mismo control que API1/API7 de §6.1 — el punto SSRF de la validación de URLs externas de evidencia (API7) sigue vigente, ahora bajo este paraguas más amplio |
+| A02 Cryptographic Failures | Directamente relevante a §15.1/§16.7/§16.8: uso correcto de Ed25519, serialización canónica antes de hashear, nunca criptografía casera |
+| **A03 Software Supply Chain Failures (nueva)** | Formaliza lo que §15.3 ya proponía (SBOM, firma de artefactos) como categoría de primer nivel, no una nota aparte — refuerza que no es opcional |
+| A04 Injection | SQL (mitigado por `sqlx` parametrizado, §6.1 prácticas transversales), pero también inyección en el pipeline de ingesta de documentos SECOP/SIGEP (§16.2) — el parser de esos documentos es superficie de ataque, no solo la API HTTP |
+| A05 Insecure Design | Justifica retroactivamente el enfoque de este documento: threat modeling y máquina de estados (§16.1) *antes* de escribir código de negocio, no una auditoría posterior |
+| A06 Security Misconfiguration | Igual que API8 |
+| A07 Vulnerable and Outdated Components | Igual que `cargo audit`/`cargo deny` de §6.1, extendido a dependencias de frontend (`npm audit` si hay clientes JS) |
+| A08 Identification and Authentication Failures | MFA de revisores (§15.1), gestión de sesión |
+| A09 Security Logging and Monitoring Failures | Cubierto por observabilidad de §12.4, pero con foco específico: un fallo de anclaje o un intento de autorización repetido debe generar alerta, no solo log |
+| **A10 Mishandling of Exceptional Conditions (nueva)** | Directamente relevante a Rust: prohibir `.unwrap()`/`.expect()` en rutas de producción del núcleo de evidencia — un panic no controlado en el proceso que firma/ancla actas es un incidente de disponibilidad *y* potencialmente de integridad si interrumpe una escritura a medias. Se traduce en regla de linting obligatoria (`clippy::unwrap_used` denegado en CI para `domain/`, `application/`, `adapters-crypto/`) |
+
+### 6.3 OWASP Top 10 CI/CD Security Risks — protege el pipeline de §12.3, no solo el producto
+
+Un atacante que compromete el pipeline no necesita encontrar una vulnerabilidad en el código: inyecta la suya directamente en el build que se despliega. Los dos vectores más explotados en la práctica:
+
+- **Poisoned Pipeline Execution (CICD-SEC-4)** — el más común en incidentes reales: un PR de un colaborador externo o un hook mal restringido logra ejecutar código arbitrario dentro del pipeline de CI. Mitigación: PRs de fuentes no confiables corren en un entorno sin acceso a secrets; cualquier paso del pipeline que sí tenga acceso a credenciales de despliegue requiere aprobación explícita, nunca se dispara automáticamente sobre código no revisado.
+- **Insufficient Flow Control (CICD-SEC-1)** — ya parcialmente cubierto por "ningún deploy a producción sin aprobación humana" (§12.3, ADR-7 en §14), pero se extiende a: ningún cambio a `main` sin revisión de otra persona (branch protection), y las credenciales de despliegue nunca se materializan en logs ni en variables expuestas a pasos no confiables del pipeline.
+- **Dependency Chain Abuse (CICD-SEC-3)** — dependency confusion/typosquatting sobre crates de Rust o paquetes npm del frontend; mitigado por `Cargo.lock`/`package-lock.json` commiteados y verificados en CI (fallo si el lockfile no coincide con lo declarado), y por el SBOM de §15.3/§6.2 (A03).
+- **Inadequate Identity and Access Management (CICD-SEC-2)** — las credenciales que el pipeline usa para desplegar (llaves de infraestructura, tokens de Docker Hub/registry) siguen el mismo principio de mínimo privilegio de §15.4, con rotación periódica, nunca compartidas entre staging y producción.
+
+### 6.4 ASVS 5.0.0 — el estándar de verificación, no solo un checklist de riesgos
+
+El Top 10 (§6.1/§6.2) dice *qué puede salir mal*; el **ASVS 5.0.0** (publicado mayo 2025, ~350 requisitos verificables en 17 categorías) dice *qué implementar y cómo verificarlo* — es la referencia que se usa para escribir criterios de aceptación de seguridad, no solo para post-mortems.
+
+- **Nivel objetivo recomendado: ASVS Nivel 2** (aplicaciones que manejan datos sensibles/transacciones significativas) como mínimo para todo el sistema, y **Nivel 3** específicamente para los módulos de firma/verificación (`adapters-crypto/`) y gestión de llaves (§15.1) — el nivel más alto, reservado normalmente para aplicaciones de máximo riesgo, es proporcional aquí porque un fallo criptográfico tiene consecuencia legal directa (§10.5), no solo técnica.
+- Los requisitos ASVS relevantes para el núcleo de evidencia se referencian por ID (`v5.0.0-X.Y.Z`) en los tickets/ADRs correspondientes desde el diseño, no se auditan retroactivamente — es la diferencia entre "seguro por diseño" y "seguro por auditoría".
+
+### 6.5 Prácticas transversales
 
 - **Autenticación/autorización**: JWT firmado o sesiones opacas + verificación de rol en cada caso de uso (defensa en profundidad, no solo en el gateway).
 - **Validación de entrada estricta** en el borde (adaptador HTTP), tipado fuerte de Rust como primera línea de defensa.
@@ -100,6 +135,7 @@ Cada capa vive en su propio crate de Rust dentro del workspace (convención de n
 - **Logging sin datos sensibles**, con trazabilidad de quién accedió a qué expediente (auditoría, coherente con el propio principio de la plataforma).
 - **Dependencias auditadas**: `cargo audit` / `cargo deny` en CI contra CVEs conocidos.
 - **HTTPS obligatorio**, HSTS, TLS 1.2+.
+- **Manejo de excepciones sin pánico** (A10 §6.2): `Result<T, E>` explícito en todo el núcleo, `.unwrap()` prohibido por lint en CI fuera de tests.
 
 ## 7. Arquitectura para funcionalidades sociales (comentarios y "me gusta")
 
@@ -629,3 +665,53 @@ lc-api/                        # workspace Cargo
 ```
 
 Los prefijos `domain`/`application` sin sufijo pertenecen siempre al núcleo de evidencia (event-sourced, §11.1); el sufijo `-social` marca explícitamente el contexto CRUD de menor criticidad (§11.2) — así el nombre del crate ya comunica a qué garantías de inmutabilidad está sujeto su contenido.
+
+## 18. Checklist previo a comenzar la programación
+
+Todo lo anterior es diseño. Esta sección es la lista de lo que debe existir **antes de que se escriba la primera línea de código de negocio** — omitir estos pasos no ahorra tiempo, lo traslada (más caro) a después del primer incidente.
+
+### 18.1 Modelado de amenazas formal (no solo este documento)
+
+- Sesión de **threat modeling** estructurada (STRIDE o similar) sobre los flujos críticos ya identificados: firmar un acta, anclar un lote, retirar contenido por orden judicial (§16.5), rectificación (§16.3). Este documento describe las mitigaciones ya decididas; el ejercicio formal existe para encontrar las que *no* se han pensado — debe involucrar a alguien fuera del equipo que escribió la arquitectura.
+- Cada hallazgo del threat modeling se convierte en un ítem de backlog **antes** del sprint 1, no en un "ya lo veremos".
+
+### 18.2 Objetivo de verificación de seguridad explícito
+
+- Fijar por escrito el **nivel ASVS objetivo** por componente (§6.4: Nivel 2 general, Nivel 3 en `adapters-crypto/` y gestión de llaves) — sin esto, "seguro" no es medible y cada desarrollador lo interpreta distinto.
+- Traducir los requisitos ASVS aplicables en **criterios de aceptación** de las primeras historias técnicas (autenticación, autorización, gestión de sesión) — no un documento aparte que nadie vuelve a abrir.
+
+### 18.3 Higiene de secretos y entornos desde el día uno
+
+- Gestor de secretos (Vault, o al menos secrets nativos del PaaS de §12.2) configurado **antes** del primer commit con credenciales reales — nunca empezar con `.env` en el repo "temporalmente".
+- **Separación completa de entornos**: dev/staging/producción con credenciales, llaves de firma y bases de datos distintas desde el inicio — migrar de "todo compartido" a esto después es mucho más costoso y arriesgado que empezar bien.
+- `.gitignore` y hooks de pre-commit que bloqueen commitear secretos (`gitleaks` o equivalente) configurados en el commit inicial del repositorio, no añadidos tras un susto.
+
+### 18.4 Pipeline y control de acceso al repositorio
+
+- **Branch protection** en `main` desde el primer commit: sin push directo, revisión obligatoria de otra persona, CI en verde obligatorio (§6.3, §12.3).
+- CI configurado para ejecutar `cargo audit`/`cargo deny`, lint de seguridad (`clippy::unwrap_used` denegado, §6.5) y la suite de tests de cumplimiento legal (§9.7) **desde el primer pipeline funcional**, no agregado "cuando haya tiempo" — un proyecto que nace sin estos gates los adopta después con mucha más fricción organizacional.
+- Definir quién tiene acceso de despliegue a producción (lista corta, nombrada, revisada) antes de que exista un entorno de producción al que desplegar.
+
+### 18.5 Estándares de código y definición de "hecho"
+
+- Guía de estilo y lint compartida (`rustfmt.toml`, `clippy.toml`) commiteada antes del primer PR de feature — evita debates de estilo retroactivos sobre código ya escrito.
+- **Definición de "hecho" (Definition of Done)** que incluya explícitamente: tests unitarios + de integración pasan, cobertura de `domain/` dentro del umbral (§9.5), sin nuevas advertencias de `clippy`, sin secretos en el diff, y — para cualquier cambio a `domain/`, `adapters-crypto/` o proyecciones de lectura — la suite de cumplimiento legal de §9.7 en verde.
+- Plantilla de PR que obligue a declarar explícitamente si el cambio toca datos personales, firmas, o el event store — dispara automáticamente una revisión adicional cuando aplique (four-eyes de §15.4).
+
+### 18.6 Roles y puntos de control humano
+
+- Designar (aunque sea a tiempo parcial al inicio) un responsable de seguridad/**security champion** dentro del equipo — alguien con mandato explícito de bloquear un merge por motivos de seguridad, no solo "buena voluntad" difusa del equipo.
+- Confirmar el punto de contacto de **asesoría legal externa** (§10, §16.10) antes del lanzamiento, no durante el primer incidente — varias decisiones de arquitectura (nivel ASVS, retención de datos, clasificación de campos) dependen de validación legal que debería idealmente preceder, no seguir, la implementación.
+- Acordar el **plan de respuesta a incidentes** (§15.5) como documento vivo desde el inicio — un plan escrito por primera vez durante un incidente real ya llegó tarde.
+
+### 18.7 Orden de implementación recomendado
+
+No todo se construye en paralelo. Orden sugerido que respeta las dependencias reales entre secciones de este documento:
+
+1. **Esqueleto hexagonal** (§2) con crates vacíos pero con los traits de puertos ya definidos — fija los límites de dependencia antes de que haya código que los viole.
+2. **Núcleo de evidencia mínimo**: máquina de estados (§16.1), event store (§11.1), firma/verificación Ed25519 (§15.1) con tests de propiedad (§9.1) — sin esto no hay producto, y es donde más caro sale improvisar después.
+3. **Pipeline de ingesta con clasificación de campos** (§16.2) — antes de conectar cualquier fuente real de datos (SIGEP/SECOP), para no ingerir nunca un dato sensible aunque sea en un ambiente de prueba.
+4. **Anclaje blockchain** (§8) como worker aislado, detrás del trait `AnclajeService` — puede empezar sobre una red de pruebas mientras el resto del sistema madura.
+5. **Capa social** (§7, `domain-social`) — deliberadamente después del núcleo, porque depende de él (evento `ActaSellada`) y tiene menor riesgo legal individual.
+6. **HumanGuard y capa de borde** (§15.2) — se integra cuando ya existen flujos reales que proteger, no antes.
+7. **Suite de cumplimiento legal (§9.7) y checklist operativo (§16.10)** — corren en paralelo a todo lo anterior desde el paso 2, no al final como "certificación" de cierre.
