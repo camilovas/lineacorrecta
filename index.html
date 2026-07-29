@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Línea Correcta — Índice</title>
+<meta name="description" content="Punto de entrada al brand board y a la landing page de La Línea Correcta.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --papel:#F6F2E9;
+    --papel-claro:#FBF8F1;
+    --tinta:#1C1A17;
+    --tinta-suave:#4A453D;
+    --carmesi:#8E2434;
+    --carmesi-osc:#5E1622;
+    --dorado:#A8853B;
+    --dorado-claro:#D9C48A;
+    --azul:#1E3557;
+    --hairline:#D9D2C2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:'Inter',sans-serif;background:var(--papel);color:var(--tinta);
+    line-height:1.65;font-size:16px;-webkit-font-smoothing:antialiased;
+    min-height:100vh;display:flex;flex-direction:column;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:0 22px;width:100%;}
+  @media(min-width:768px){.wrap{padding:0 44px;}}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--carmesi);font-weight:600;}
+
+  header{padding:72px 0 48px;text-align:center;border-bottom:4px double var(--tinta);}
+  h1{font-family:'Playfair Display',serif;font-weight:800;font-size:clamp(38px,7vw,64px);line-height:1.05;margin:16px 0 14px;}
+  header .sub{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(15px,2vw,19px);color:var(--tinta-suave);max-width:56ch;margin:0 auto;}
+  header svg{display:block;margin:36px auto 0;max-width:340px;width:80%;height:auto;}
+
+  main{flex:1;padding:56px 0 72px;}
+  .cards{display:grid;gap:22px;grid-template-columns:1fr;}
+  @media(min-width:760px){.cards{grid-template-columns:1fr 1fr;}}
+
+  .card{
+    display:flex;flex-direction:column;border:1.5px solid var(--tinta);background:var(--papel-claro);
+    text-decoration:none;color:var(--tinta);padding:30px 28px;transition:transform .15s,box-shadow .15s;
+  }
+  .card:hover{transform:translateY(-3px);box-shadow:6px 6px 0 var(--tinta);}
+  .card .tag{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--carmesi);font-weight:600;margin-bottom:12px;}
+  .card h2{font-family:'Playfair Display',serif;font-weight:800;font-size:26px;margin-bottom:10px;line-height:1.15;}
+  .card p{font-size:14.5px;color:var(--tinta-suave);margin-bottom:20px;flex:1;}
+  .card .go{font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;letter-spacing:.05em;color:var(--tinta);}
+  .card .go::after{content:' →';}
+  .card.dark{background:var(--tinta);color:var(--papel);}
+  .card.dark p{color:#B8B2A4;}
+  .card.dark .go{color:var(--papel);}
+  .card.dark .tag{color:var(--dorado-claro);}
+
+  .links{margin-top:44px;text-align:center;}
+  .links a{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--tinta-suave);text-decoration:none;border-bottom:1px solid var(--hairline);padding-bottom:2px;}
+  .links a:hover{color:var(--carmesi);border-color:var(--carmesi);}
+
+  footer{padding:30px 0 44px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--tinta-suave);letter-spacing:.08em;}
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <span class="eyebrow">Índice del proyecto</span>
+  <h1>La Línea Correcta</h1>
+  <p class="sub">El Poder Moral que Angostura declaró irrealizable, construido como red ciudadana de veeduría.</p>
+  <svg viewBox="0 0 360 60" role="img" aria-label="La rúbrica: trazo de pluma que se convierte en línea recta digital">
+    <path d="M12 42 C 24 10, 50 12, 45 32 C 41 46, 22 47, 29 32 C 36 18, 66 18, 76 32 L 300 32" fill="none" stroke="#1C1A17" stroke-width="3" stroke-linecap="round"/>
+    <rect x="303" y="27.5" width="9" height="9" fill="#8E2434"/>
+  </svg>
+</header>
+
+<main class="wrap">
+  <div class="cards">
+    <a class="card" href="la-rubrica-brand-board-1.html">
+      <span class="tag">Identidad · Brand Board Nº 001</span>
+      <h2>La Rúbrica</h2>
+      <p>Sistema completo de marca: logo, paleta, tipografía, voz, sistema de veredictos y reglas de blindaje político.</p>
+      <span class="go">Ver el brand board</span>
+    </a>
+    <a class="card dark" href="linea-correcta-web-rubrica.html">
+      <span class="tag">Producto · Landing page</span>
+      <h2>La conducta pública, firmada y sellada</h2>
+      <p>La página del producto: cómo funciona, a quién vigila, el Areópago, código abierto.</p>
+      <span class="go">Ver la landing</span>
+    </a>
+  </div>
+
+  <div class="links">
+    <a href="docs/INDICE.md">Documentación de arquitectura →</a>
+  </div>
+</main>
+
+<footer>LA LÍNEA CORRECTA · MDCCCXIX → MMXXVI</footer>
+
+</body>
+</html>
